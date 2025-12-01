@@ -82,7 +82,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         symbolGrid.appendChild(btn);
     });
+
+    // Style Toolbar Logic
+    document.getElementById('btnBold').addEventListener('click', () => wrapSelection(input, '\\mathbf{', '}'));
+    document.getElementById('btnMono').addEventListener('click', () => wrapSelection(input, '\\mathtt{', '}'));
 });
+
+function wrapSelection(input, startTag, endTag) {
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const value = input.value;
+    const selected = value.substring(start, end);
+    const replacement = startTag + selected + endTag;
+    input.value = value.substring(0, start) + replacement + value.substring(end);
+    input.selectionStart = start + startTag.length;
+    input.selectionEnd = start + startTag.length + selected.length;
+    input.focus();
+    input.dispatchEvent(new Event('input'));
+}
 
 function insertAtCursor(input, text) {
     const start = input.selectionStart;
@@ -96,8 +113,7 @@ function insertAtCursor(input, text) {
 function latexToUnicode(latex) {
     let result = latex;
 
-    // 1. Replace standard commands (e.g., \alpha, \to)
-    // We sort keys by length descending to avoid partial matches (e.g. replacing \rightarrow before \right)
+    // 1. Replace standard commands
     const commands = Object.keys(latexMap).sort((a, b) => b.length - a.length);
     for (const cmd of commands) {
         // Global replace, escaping the backslash for regex
@@ -121,8 +137,13 @@ function latexToUnicode(latex) {
         return convertToSub(char);
     });
 
-    // 4. Cleanup braces that might be left from commands like \text{...} (simple version)
-    // This is a basic heuristic; for full LaTeX parsing we'd need a tokenizer.
+    // 4. Handle Bold \mathbf{...}
+    result = result.replace(/\\mathbf\{([^}]+)\}/g, (_, content) => convertToBold(content));
+
+    // 5. Handle Monospace \mathtt{...}
+    result = result.replace(/\\mathtt\{([^}]+)\}/g, (_, content) => convertToMono(content));
+
+    // 6. Cleanup
     result = result.replace(/\\text\{([^}]+)\}/g, '$1');
     result = result.replace(/\{|\}/g, ''); // Remove remaining braces
 
@@ -142,4 +163,12 @@ function convertToSub(text) {
     return text.split('').map(char => {
         return subscriptMap[char] || char;
     }).join('');
+}
+
+function convertToBold(text) {
+    return text.split('').map(char => boldMap[char] || char).join('');
+}
+
+function convertToMono(text) {
+    return text.split('').map(char => monospaceMap[char] || char).join('');
 }
