@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Medium LaTeX</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Medium LaTeX</h1>
+    </header>
+    <main>
+      <div class="input-group">
+        <label for="latexInput">LaTeX Input</label>
+        <textarea id="latexInput" placeholder="Type LaTeX here... e.g., \alpha \to \beta"></textarea>
+      </div>
+      <div class="preview-group">
+        <label>Unicode Preview</label>
+        <div id="preview" class="preview-box"></div>
+      </div>
+      <button id="copyBtn">Copy to Clipboard</button>
+      <div id="status" class="status-msg"></div>
+    </main>
+    <footer>
+      <p>Supports basic math & subscripts</p>
+    </footer>
+  </div>
+  <script src="latex-map.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
