@@ -94,22 +94,62 @@ textarea:focus {
   border-color: #bbb;
 }
 
-.history-group {
-  margin-top: 12px;
-  border-top: 1px solid #eee;
-  padding-top: 8px;
+.action-row {
+  display: flex;
+  gap: 8px;
 }
 
-.history-list {
+#copyBtn {
+  flex: 1;
+}
+
+.secondary-btn {
+  background: #f0f0f0;
+  color: #333;
+  border: 1px solid #ccc;
+  width: 60px;
+}
+
+.secondary-btn:hover {
+  background: #e0e0e0;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-top: 12px;
+}
+
+.tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 8px;
+  color: #666;
+  border-radius: 0;
+}
+
+.tab-btn.active {
+  color: #1a8917;
+  border-bottom-color: #1a8917;
+}
+
+.list-container {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  max-height: 100px;
+  max-height: 120px;
   overflow-y: auto;
+  margin-top: 8px;
 }
 
-.history-item {
-  padding: 4px 8px;
+.hidden {
+  display: none;
+}
+
+.list-item {
+  padding: 6px 8px;
   background: #f9f9f9;
   border: 1px solid #eee;
   border-radius: 4px;
@@ -117,12 +157,27 @@ textarea:focus {
   font-size: 12px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   color: #555;
 }
 
-.history-item:hover {
+.list-item:hover {
   background: #eef;
   border-color: #ccd;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 14px;
+  padding: 0 4px;
+  margin-left: 8px;
+}
+
+.delete-btn:hover {
+  color: #d00;
+  background: none;
 }
 
 .preview-box {

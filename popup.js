@@ -24,31 +24,101 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // History Logic
+    // Tab Logic
+    const tabRecent = document.getElementById('tabRecent');
+    const tabLibrary = document.getElementById('tabLibrary');
     const historyList = document.getElementById('historyList');
+    const libraryList = document.getElementById('libraryList');
+
+    tabRecent.addEventListener('click', () => switchTab('recent'));
+    tabLibrary.addEventListener('click', () => switchTab('library'));
+
+    function switchTab(tab) {
+        if (tab === 'recent') {
+            tabRecent.classList.add('active');
+            tabLibrary.classList.remove('active');
+            historyList.classList.remove('hidden');
+            libraryList.classList.add('hidden');
+            loadHistory();
+        } else {
+            tabLibrary.classList.add('active');
+            tabRecent.classList.remove('active');
+            libraryList.classList.remove('hidden');
+            historyList.classList.add('hidden');
+            loadLibrary();
+        }
+    }
+
+    // Save to Library
+    document.getElementById('saveBtn').addEventListener('click', () => {
+        const latex = input.value;
+        if (!latex) return;
+        const name = prompt('Name this formula (e.g., "Bayes Theorem"):');
+        if (name) {
+            addToLibrary(name, latex);
+            switchTab('library');
+        }
+    });
+
+    function addToLibrary(name, latex) {
+        const library = JSON.parse(localStorage.getItem('latexLibrary') || '[]');
+        library.push({ id: Date.now(), name, latex });
+        localStorage.setItem('latexLibrary', JSON.stringify(library));
+        loadLibrary();
+    }
+
+    function loadLibrary() {
+        const library = JSON.parse(localStorage.getItem('latexLibrary') || '[]');
+        libraryList.innerHTML = '';
+        library.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = `<span>${item.name}</span>`;
+
+            const delBtn = document.createElement('button');
+            delBtn.className = 'delete-btn';
+            delBtn.innerHTML = '&times;';
+            delBtn.title = 'Delete';
+            delBtn.onclick = (e) => {
+                e.stopPropagation();
+                deleteFromLibrary(item.id);
+            };
+
+            div.appendChild(delBtn);
+            div.addEventListener('click', () => {
+                input.value = item.latex;
+                input.dispatchEvent(new Event('input'));
+            });
+            libraryList.appendChild(div);
+        });
+    }
+
+    function deleteFromLibrary(id) {
+        let library = JSON.parse(localStorage.getItem('latexLibrary') || '[]');
+        library = library.filter(item => item.id !== id);
+        localStorage.setItem('latexLibrary', JSON.stringify(library));
+        loadLibrary();
+    }
+
+    // History Logic
     loadHistory();
 
     function addToHistory(latex) {
         if (!latex) return;
         let history = JSON.parse(localStorage.getItem('latexHistory') || '[]');
-        // Remove if exists to move to top
         history = history.filter(item => item !== latex);
         history.unshift(latex);
         if (history.length > 5) history.pop();
         localStorage.setItem('latexHistory', JSON.stringify(history));
-        renderHistory(history);
+        if (tabRecent.classList.contains('active')) loadHistory();
     }
 
     function loadHistory() {
         const history = JSON.parse(localStorage.getItem('latexHistory') || '[]');
-        renderHistory(history);
-    }
-
-    function renderHistory(history) {
         historyList.innerHTML = '';
         history.forEach(item => {
             const div = document.createElement('div');
-            div.className = 'history-item';
+            div.className = 'list-item';
             div.textContent = item;
             div.addEventListener('click', () => {
                 input.value = item;

@@ -26,13 +26,19 @@
         <label>Unicode Preview</label>
         <div id="preview" class="preview-box"></div>
       </div>
-      <button id="copyBtn">Copy to Clipboard</button>
+      <div class="action-row">
+        <button id="copyBtn">Copy to Clipboard</button>
+        <button id="saveBtn" class="secondary-btn" title="Save to Library">Save</button>
+      </div>
       <div id="status" class="status-msg"></div>
 
-      <div class="history-group">
-        <label>Recent</label>
-        <div id="historyList" class="history-list"></div>
+      <div class="tabs">
+        <button id="tabRecent" class="tab-btn active">Recent</button>
+        <button id="tabLibrary" class="tab-btn">Library</button>
       </div>
+
+      <div id="historyList" class="list-container"></div>
+      <div id="libraryList" class="list-container hidden"></div>
     </main>
     <footer>
       <p>Supports basic math & subscripts</p>
