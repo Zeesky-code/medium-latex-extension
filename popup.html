@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>Medium LaTeX</title>
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -14,6 +16,7 @@
       <div class="input-group">
         <label for="latexInput">LaTeX Input</label>
         <textarea id="latexInput" placeholder="Type LaTeX here... e.g., \alpha \to \beta"></textarea>
+        <div id="symbolGrid" class="symbol-grid"></div>
       </div>
       <div class="preview-group">
         <label>Unicode Preview</label>
@@ -29,4 +32,5 @@
   <script src="latex-map.js"></script>
   <script src="popup.js"></script>
 </body>
+
 </html>

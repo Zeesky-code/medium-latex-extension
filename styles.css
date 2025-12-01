@@ -17,10 +17,12 @@ body {
 header h1 {
   margin: 0;
   font-size: 18px;
-  color: #1a8917; /* Medium Green */
+  color: #1a8917;
+  /* Medium Green */
 }
 
-.input-group, .preview-group {
+.input-group,
+.preview-group {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -46,6 +48,30 @@ textarea {
 textarea:focus {
   outline: none;
   border-color: #1a8917;
+}
+
+.symbol-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.symbol-btn {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  color: #333;
+  transition: all 0.2s;
+}
+
+.symbol-btn:hover {
+  background: #f0f0f0;
+  border-color: #bbb;
 }
 
 .preview-box {

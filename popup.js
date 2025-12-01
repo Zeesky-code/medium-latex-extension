@@ -22,7 +22,41 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Copy failed', err);
         });
     });
+
+    // Symbol Picker Logic
+    const commonSymbols = [
+        { label: 'α', code: '\\alpha ' }, { label: 'β', code: '\\beta ' },
+        { label: 'γ', code: '\\gamma ' }, { label: 'θ', code: '\\theta ' },
+        { label: 'π', code: '\\pi ' }, { label: 'σ', code: '\\sigma ' },
+        { label: 'Ω', code: '\\Omega ' }, { label: '∞', code: '\\infty ' },
+        { label: '→', code: '\\to ' }, { label: '⇒', code: '\\Rightarrow ' },
+        { label: '≈', code: '\\approx ' }, { label: '≠', code: '\\neq ' },
+        { label: '≤', code: '\\leq ' }, { label: '≥', code: '\\geq ' },
+        { label: '×', code: '\\times ' }, { label: '∈', code: '\\in ' }
+    ];
+
+    const symbolGrid = document.getElementById('symbolGrid');
+    commonSymbols.forEach(sym => {
+        const btn = document.createElement('button');
+        btn.className = 'symbol-btn';
+        btn.textContent = sym.label;
+        btn.title = sym.code.trim();
+        btn.addEventListener('click', () => {
+            insertAtCursor(input, sym.code);
+            input.dispatchEvent(new Event('input')); // Trigger preview update
+        });
+        symbolGrid.appendChild(btn);
+    });
 });
+
+function insertAtCursor(input, text) {
+    const start = input.selectionStart;
+    const end = input.selectionEnd;
+    const value = input.value;
+    input.value = value.substring(0, start) + text + value.substring(end);
+    input.selectionStart = input.selectionEnd = start + text.length;
+    input.focus();
+}
 
 function latexToUnicode(latex) {
     let result = latex;
