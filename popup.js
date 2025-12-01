@@ -113,48 +113,36 @@ function insertAtCursor(input, text) {
 function latexToUnicode(latex) {
     let result = latex;
 
-    // 1. Replace standard commands
+    // Replace standard commands
     const commands = Object.keys(latexMap).sort((a, b) => b.length - a.length);
     for (const cmd of commands) {
-        // Global replace, escaping the backslash for regex
         const regex = new RegExp(cmd.replace(/\\/g, '\\\\'), 'g');
         result = result.replace(regex, latexMap[cmd]);
     }
 
-    // 2. Handle Superscripts ^{...} or ^x
-    result = result.replace(/\^\{([^}]+)\}/g, (_, content) => {
-        return convertToSuper(content);
-    });
-    result = result.replace(/\^([a-zA-Z0-9])/g, (_, char) => {
-        return convertToSuper(char);
-    });
+    // Superscripts
+    result = result.replace(/\^\{([^}]+)\}/g, (_, content) => convertToSuper(content));
+    result = result.replace(/\^([a-zA-Z0-9])/g, (_, char) => convertToSuper(char));
 
-    // 3. Handle Subscripts _{...} or _x
-    result = result.replace(/_\{([^}]+)\}/g, (_, content) => {
-        return convertToSub(content);
-    });
-    result = result.replace(/_([a-zA-Z0-9])/g, (_, char) => {
-        return convertToSub(char);
-    });
+    // Subscripts
+    result = result.replace(/_\{([^}]+)\}/g, (_, content) => convertToSub(content));
+    result = result.replace(/_([a-zA-Z0-9])/g, (_, char) => convertToSub(char));
 
-    // 4. Handle Bold \mathbf{...}
+    // Bold
     result = result.replace(/\\mathbf\{([^}]+)\}/g, (_, content) => convertToBold(content));
 
-    // 5. Handle Monospace \mathtt{...}
+    // Monospace
     result = result.replace(/\\mathtt\{([^}]+)\}/g, (_, content) => convertToMono(content));
 
-    // 6. Cleanup
+    // Cleanup
     result = result.replace(/\\text\{([^}]+)\}/g, '$1');
-    result = result.replace(/\{|\}/g, ''); // Remove remaining braces
+    result = result.replace(/\{|\}/g, '');
 
     return result;
 }
 
 function convertToSuper(text) {
     return text.split('').map(char => {
-        // Check if we have a mapping, otherwise keep char (or maybe use a fallback?)
-        // Comma handling: often used in lists like 1,j. There is no superscript comma in standard unicode blocks easily accessible,
-        // but we can leave it as is or try to find one.
         return superscriptMap[char] || char;
     }).join('');
 }
