@@ -3,7 +3,9 @@
   "name": "Medium LaTeX to Unicode",
   "version": "1.0",
   "description": "Convert LaTeX to Unicode for Medium",
-  "permissions": ["clipboardWrite"],
+  "permissions": [
+    "clipboardWrite"
+  ],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -16,5 +18,17 @@
     "16": "icon16.png",
     "48": "icon48.png",
     "128": "icon128.png"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://medium.com/*",
+        "https://*.medium.com/*"
+      ],
+      "js": [
+        "latex-map.js",
+        "content.js"
+      ]
+    }
+  ]
 }
