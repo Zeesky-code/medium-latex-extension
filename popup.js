@@ -17,11 +17,46 @@ document.addEventListener('DOMContentLoaded', () => {
         navigator.clipboard.writeText(text).then(() => {
             status.textContent = 'Copied!';
             setTimeout(() => status.textContent = '', 2000);
+            addToHistory(input.value);
         }).catch(err => {
             status.textContent = 'Failed to copy';
             console.error('Copy failed', err);
         });
     });
+
+    // History Logic
+    const historyList = document.getElementById('historyList');
+    loadHistory();
+
+    function addToHistory(latex) {
+        if (!latex) return;
+        let history = JSON.parse(localStorage.getItem('latexHistory') || '[]');
+        // Remove if exists to move to top
+        history = history.filter(item => item !== latex);
+        history.unshift(latex);
+        if (history.length > 5) history.pop();
+        localStorage.setItem('latexHistory', JSON.stringify(history));
+        renderHistory(history);
+    }
+
+    function loadHistory() {
+        const history = JSON.parse(localStorage.getItem('latexHistory') || '[]');
+        renderHistory(history);
+    }
+
+    function renderHistory(history) {
+        historyList.innerHTML = '';
+        history.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'history-item';
+            div.textContent = item;
+            div.addEventListener('click', () => {
+                input.value = item;
+                input.dispatchEvent(new Event('input'));
+            });
+            historyList.appendChild(div);
+        });
+    }
 
     // Symbol Picker Logic
     const commonSymbols = [

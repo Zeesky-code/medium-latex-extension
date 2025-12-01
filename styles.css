@@ -74,6 +74,37 @@ textarea:focus {
   border-color: #bbb;
 }
 
+.history-group {
+  margin-top: 12px;
+  border-top: 1px solid #eee;
+  padding-top: 8px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 100px;
+  overflow-y: auto;
+}
+
+.history-item {
+  padding: 4px 8px;
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  color: #555;
+}
+
+.history-item:hover {
+  background: #eef;
+  border-color: #ccd;
+}
+
 .preview-box {
   min-height: 40px;
   padding: 8px;
