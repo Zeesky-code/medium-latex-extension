@@ -15,13 +15,60 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!text) return;
 
         navigator.clipboard.writeText(text).then(() => {
-            status.textContent = 'Copied!';
-            setTimeout(() => status.textContent = '', 2000);
+            showStatus('Copied Unicode!');
             addToHistory(input.value);
         }).catch(err => {
-            status.textContent = 'Failed to copy';
+            showStatus('Failed to copy', true);
             console.error('Copy failed', err);
         });
+    });
+
+    renderBtn.addEventListener('click', () => {
+        const latex = input.value;
+        if (!latex) return;
+
+        const container = document.getElementById('render-container');
+        container.innerHTML = ''; // Clear previous
+
+        try {
+            // 1. Render LaTeX to DOM using KaTeX
+            katex.render(latex, container, {
+                displayMode: true,
+                throwOnError: false,
+                output: 'html' // Ensure HTML output for html2canvas
+            });
+
+            // 2. Convert DOM to Image using html2canvas
+            // We need a slight delay or force layout to ensure fonts load? 
+            // Usually KaTeX is sync, but html2canvas needs visible elements.
+            // Since it's off-screen, we might need to be careful.
+
+            html2canvas(container, {
+                backgroundColor: null, // Transparent background
+                scale: 3 // High resolution
+            }).then(canvas => {
+                canvas.toBlob(blob => {
+                    if (!blob) {
+                        showStatus('Error generating image', true);
+                        return;
+                    }
+
+                    // 3. Copy Image to Clipboard
+                    const item = new ClipboardItem({ 'image/png': blob });
+                    navigator.clipboard.write([item]).then(() => {
+                        showStatus('Copied Image!');
+                        addToHistory(latex + ' (Image)');
+                    }).catch(err => {
+                        console.error(err);
+                        showStatus('Clipboard Error', true);
+                    });
+                });
+            });
+
+        } catch (e) {
+            console.error(e);
+            showStatus('Render Error', true);
+        }
     });
 
     // Tab Logic

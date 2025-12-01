@@ -5,6 +5,9 @@
   <meta charset="UTF-8">
   <title>Medium LaTeX</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="lib/katex.min.css">
+  <script src="lib/katex.min.js"></script>
+  <script src="lib/html2canvas.min.js"></script>
 </head>
 
 <body>
@@ -27,10 +30,14 @@
         <div id="preview" class="preview-box"></div>
       </div>
       <div class="action-row">
-        <button id="copyBtn">Copy to Clipboard</button>
+        <button id="copyBtn">Copy Unicode</button>
+        <button id="renderBtn" class="secondary-btn" title="Render as Image for complex math">📸 Image</button>
         <button id="saveBtn" class="secondary-btn" title="Save to Library">Save</button>
       </div>
       <div id="status" class="status-msg"></div>
+
+      <!-- Hidden container for image rendering -->
+      <div id="render-container" style="position: absolute; left: -9999px; top: -9999px;"></div>
 
       <div class="tabs">
         <button id="tabRecent" class="tab-btn active">Recent</button>
