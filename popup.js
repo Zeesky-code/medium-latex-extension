@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const input = document.getElementById('latexInput');
     const preview = document.getElementById('preview');
     const copyBtn = document.getElementById('copyBtn');
+    const renderBtn = document.getElementById('renderBtn');
+    const saveBtn = document.getElementById('saveBtn');
     const status = document.getElementById('status');
 
     input.addEventListener('input', () => {
@@ -97,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Save to Library
-    document.getElementById('saveBtn').addEventListener('click', () => {
+    saveBtn.addEventListener('click', () => {
         const latex = input.value;
         if (!latex) return;
         const name = prompt('Name this formula (e.g., "Bayes Theorem"):');
@@ -203,6 +205,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Style Toolbar Logic
     document.getElementById('btnBold').addEventListener('click', () => wrapSelection(input, '\\mathbf{', '}'));
     document.getElementById('btnMono').addEventListener('click', () => wrapSelection(input, '\\mathtt{', '}'));
+
+    // Status message helper
+    function showStatus(message, isError = false) {
+        status.textContent = message;
+        status.style.color = isError ? '#d00' : '#1a8917';
+        setTimeout(() => {
+            status.textContent = '';
+        }, 2000);
+    }
 });
 
 function wrapSelection(input, startTag, endTag) {

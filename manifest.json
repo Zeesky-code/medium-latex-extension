@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Medium LaTeX to Unicode",
+  "name": "UniTex — Unicode + LaTeX",
   "version": "1.0",
-  "description": "Convert LaTeX to Unicode for Medium",
+  "description": "Convert LaTeX to beautiful Unicode math symbols. Works on Medium, Gmail, Notion, Twitter, and any text editor.",
   "permissions": [
     "clipboardWrite"
   ],
