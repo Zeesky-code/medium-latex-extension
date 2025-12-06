@@ -26,7 +26,7 @@ A Chrome Extension that transforms LaTeX notation into Unicode characters you ca
 2. Navigate to `chrome://extensions`
 3. Enable **"Developer mode"** in the top right corner
 4. Click **"Load unpacked"** button in the top left
-5. Select the project folder: `medium-latex-extension`
+5. Select the project folder: `UniTex — Unicode + LaTeX`
 6. The UniTex icon should appear in your toolbar
 
 ## Usage
